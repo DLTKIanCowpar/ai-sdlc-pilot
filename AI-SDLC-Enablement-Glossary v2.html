@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-SDLC Enablement Compendium</title>
+<style>
+:root{
+  --bg:#f7f8fa;--card:#fff;--ink:#1d2330;--mute:#5b6577;--line:#dde1e8;--accent:#1f5fbf;
+  --warn-bg:#fff4dc;--warn-ink:#7a4d00;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#14171d;--card:#1c2029;--ink:#e8ebf1;--mute:#9aa4b5;--line:#2c3240;--accent:#6aa3f5;
+  --warn-bg:#3a2e12;--warn-ink:#f1c36a;}
+}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{padding:28px 24px 8px;max-width:1100px;margin:0 auto}
+h1{margin:0 0 4px;font-size:26px}
+header p{margin:0;color:var(--mute);max-width:760px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-top:16px}
+nav div{max-width:1100px;margin:0 auto;padding:8px 24px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav a{color:var(--ink);text-decoration:none;padding:5px 11px;border-radius:999px;border:1px solid var(--line);font-size:13px;background:var(--card)}
+nav a:hover{border-color:var(--accent);color:var(--accent)}
+main{max-width:1100px;margin:0 auto;padding:8px 24px 60px}
+section{margin-top:34px}
+h2{font-size:20px;margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 14px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.search{width:100%;max-width:420px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;margin-bottom:10px}
+.terms dt{font-weight:700;margin-top:10px}
+.terms dd{margin:2px 0 0}
+.terms dt .stage{font-weight:500;font-size:11px;margin-left:6px;color:var(--mute)}
+.letter{font-size:13px;color:var(--accent);font-weight:700;margin-top:16px;border-bottom:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--card)}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+td[contenteditable]{background:var(--warn-bg);color:var(--warn-ink);min-width:140px}
+code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:12.5px}
+footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--mute);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI-SDLC Enablement Compendium</h1>
+  <p>A companion to the AI-SDLC Camp: your product's systems, the vocabulary, and the skills, in one place. Examples are Vantagepoint's, as in the camp. Fill in your product's names in the yellow cells.</p>
+</header>
+<nav><div>
+  <a href="#systems">Your product's systems</a><a href="#terms">Terms A to Z</a><a href="#skills">Skills</a>
+</div></nav>
+<main>
+
+<section id="systems">
+  <h2>1. Your product's systems</h2>
+  <p class="sub">The camp uses generic names so the process reads the same everywhere. Vantagepoint's instances are shown. Fill in the yellow cells for your product. Click a cell to type.</p>
+  <table id="sysTable"></table>
+</section>
+
+<section id="terms">
+  <h2>2. Terms A to Z</h2>
+  <input class="search" id="termSearch" placeholder="Search terms (try: spec, PBI, frame, OPEN)">
+  <dl class="terms" id="termList"></dl>
+</section>
+
+<section id="skills">
+  <h2>3. Skills by stage and role</h2>
+  <p class="sub">What you say, and where it runs. Names are Vantagepoint's. Your product's plugin and repository use the same skills under their own names where they differ. The plugin repository's <code>docs/SKILL-ROUTING-CATALOG.md</code> is the authority when two skills overlap.</p>
+  <div class="chips" id="skillChips"></div>
+  <table id="skillTable"></table>
+</section>
+
+</main>
+<footer>Built from AI-SDLC Camp v3 (updated 23 October 2026). Where the camp does not say where something lives, ask your product's AI-SDLC lead.</footer>
+
+<script>
+const SYS=[
+["Roadmap tool","Demand: ideas, Features, releases","Aha (deltek1.aha.io, VP2)"],
+["Frame home","Scope contract, one page per Feature","Notion, Framing Documents database"],
+["Work tracker","Feature, spec, PBIs, Tasks, bugs, test cases, PRs","Azure DevOps on-prem TFS (tfs.deltek.com/tfs/Deltek)"],
+["Product repository","Code, tests, engineering skills, KnowledgeBase","Vantagepoint repository (Maconomy uses Perforce)"],
+["Plugin","Product, UX and Documentation door","dvp (Deltek Vantagepoint AI). Type /dvp"],
+["Help content","How it works today (grounding)","Vantagepoint Help, read through the help lookup"],
+["Feedback log","Where friction goes","Not stated in the camp"]
+];
+
+const TERMS=[
+["AC / Acceptance Criteria","The Feature field holding the build-ready spec sections. What AI, dev and QE build and test from.","3"],
+["AI-DLC","Another name some pages use for the same process as AI-SDLC.",""],
+["Ask Dela","Deltek's AI assistant. Public APIs must be made available to it. Private APIs optionally.","3"],
+["Automation plan","Automation's review of every test case on a PBI, assigning a layer and a status. Cross-checked before Done.","5"],
+["Board","The Kanban board of PBIs in eight columns, from Planned to Done. Framing and Feature Review are not columns.","3"],
+["Capability Spec","The implementation contract for a Feature, on the Feature's AC and Description fields. One per Feature. Drafted at framing, finalized in Exploring.","2,3"],
+["Category","A navigation bucket of the KnowledgeBase that answers one business question. Never the unit of content.",""],
+["Considerations","The roughly 30-item PDM checklist walked at spec time. Each item gets one disposition.","3"],
+["Database change request (DCR)","The standard process for schema changes, run in parallel with code.","4"],
+["Default child PBI","The one thin PBI created automatically with the spec. What dev picks up.","2"],
+["Description","The Feature field holding human-reference spec sections: context, history and audit.","3"],
+["Design Review","Inside Requirements Collab, each PBI's implementation slice is reviewed against the spec.","3"],
+["Dev demo","The recorded demonstration of a working PBI to the PDM and QE at the end of In Dev. The handoff into testing.","4"],
+["Disposition","One of: Yes in spec, Yes new PBI, Yes existing PBI, No with a reason, Deferred.","3"],
+["Domain","The unit of the KnowledgeBase: one self-contained folder with overview, work items, help, conventions and code references.",""],
+["dvp","Deltek Vantagepoint AI, the Claude Desktop plugin for Vantagepoint. Type /dvp first in every new chat. Other products have their own plugin.","0"],
+["Enable Mechanism","How a feature is activated: new Opt-In, new Setting, new Security permission, or none.","3"],
+["Exploring","Stage 3. Feature Review before the board, then Planned and Requirements Collab on it.","3"],
+["Feature","The unit of scope and of specification. The frame and the spec both attach to it.","1"],
+["Feature path","The route a Feature takes before the board: Framing, Feature Review, release plan defined.","2,3"],
+["Feature Review","The whole-team meeting, before the board, that works the frame and draft spec and creates and estimates PBIs. The Tech-Plan comes later.","3"],
+["Feature team","One full-stack engineer, the PDM and a QE for a standard feature. Meets three to five days a week. Not a standup.","3"],
+["Frame / Frame Artifact","The 18-section scope contract in Notion, one page per Feature, wireframes embedded.","2"],
+["Frame home","The generic name for where the frame lives. Notion's Framing Documents database for Vantagepoint.","2"],
+["Hi-fi mock-up","High-fidelity design UX produces with the PDM after the release plan is defined, by hand, for features that need one.","3"],
+["High-Value Org","A voting organization with more than 3,000 employees or more than $1M revenue, flagged during framing.","2"],
+["Hub domain","A master-data domain other domains reference by identity (Firm, Contact, Employee Master and others).",""],
+["In Bug Fixing","Board column where a PBI sits while any Sev 1 to 3 bug is open.","5"],
+["KnowledgeBase","The product's memory for the skills: work items, help, code references and conventions, by category and domain, in the knowledgebase/ folder.","0"],
+["[OPEN]","Inline marker for anything unresolved in the spec. Must be resolved at spec close, except spikes.","3"],
+["Opt-In","A way to gate a feature. Needs two follow-up PBIs (Hide/Enable, Remove) created by hand for now.","3"],
+["Outcome grid","The nine-element customer outcome grid built during framing at hypothesis grade. The frame must carry measurable outcomes.","2"],
+["OVERVIEW.md","A domain's map. The first file to read in a domain.",""],
+["PBI","Product Backlog Item. The unit of implementation work. A thin slice of the spec. Dev, QE and Automation work hangs under it as Tasks.","2,3"],
+["PDM","Product Manager, Deltek's product management role. Not 'PM', which means the project manager persona our products serve.","1"],
+["Persona","A short instruction file telling Claude which skills to run for a role. The /dvp menu has six.","0"],
+["Planned","The first column of the PBI board. Not a roadmap status.","3"],
+["Propose, confirm, write-back","The write discipline in every skill: propose the change in plain language, wait for your go, then report what was written. Reads are free.","0"],
+["Quick path, deep path","The two reading depths for the KnowledgeBase: targeted task or full audit.",""],
+["Ready for Dev","A queue column with no tasks, so the Scrum Master can see bottlenecks.","4"],
+["Release plan defined","The milestone after Feature Reviews when release scope is committed and PBIs land on the board.","3"],
+["Related capabilities","Framing's Dependency, Overlap and Replacement classification of related features.","2"],
+["Repo-Native","The plugin persona that discovers and uses the product repository's own skills. Engineering personas check it first.","0"],
+["Requirements Collab","Board column inside the sprint where, one PBI at a time, the spec slice, mock-up and Tech-Plan are finalized before Ready for Dev.","3"],
+["Roadmap tool","Generic name for the system of demand. Aha for Vantagepoint.","1"],
+["Sev 1 to Sev 3","Bug severities that block Done. Sev 4 and 5 do not.","5"],
+["Skill","A named capability Claude runs, such as framing or tech-plan. Run by typing what you want, or a slash command in Claude Code.","0"],
+["Skill feedback log","Where you record bugs, friction and ideas about the skills. The camp names it but never says where it is.","6"],
+["Spike","An investigation PBI created at Feature Review. [SPIKE-#] marks the requirement waiting on it.","3"],
+["START-HERE.md","The KnowledgeBase entry point: categories, populated domains, structure and reading rules.",""],
+["Tasks","The work item type under a PBI for Dev, QE and Automation work.","4"],
+["Team Follow-ups","The spec's list of in-flight work during Exploring.","3"],
+["Team Owner","The engineering lead accountable for a team's reviews and approvals. In Feature Review and Requirements Collab.","3"],
+["Tech-Plan","The technical plan with Research Findings, written by the developer in Requirements Collab against the real code. Final before Ready for Dev. Local working files.","3,4"],
+["Use case (UC-#)","A testable scenario in the spec: actor, preconditions, trigger, flows, outcomes. QE and automation build from them.","3"],
+["Work tracker","Generic name for the system holding the Feature, spec, PBIs, Tasks, bugs and test cases. ADO on-prem TFS for Vantagepoint.","2"],
+["Write and purge","For multi-record scans: process a batch, write findings down, drop the records from context, move on.",""]
+];
+
+const SK=[
+["connector-check","Any","Claude Desktop","check connectors","PDM UX Documentation SM"],
+["framing","Framing","Claude Desktop","let's frame VP2-1234","PDM UX"],
+["pm-outcome-grid-builder","Framing","Claude Desktop","build the outcome grid","PDM"],
+["vantagepoint-mockup","Framing","Claude Desktop","generate wireframe","PDM UX"],
+["deltek-notion-frame-home","Framing","Claude Desktop","save the frame to Notion","PDM"],
+["capability-spec","Exploring","Claude Desktop","start capability spec for VP2-1234 / update the spec based on these notes / walk considerations / prep for next meeting / close the spec","PDM Developer QE UX Documentation"],
+["deltek-aha-lookup","Any","Claude Desktop","check Aha / what's the status of feature VP2-1234","PDM SM Documentation"],
+["deltek-azure-devops-lookup","Any","Claude Desktop","check ADO / find the work item","PDM SM Documentation"],
+["vantagepoint-help-lookup","Any","Claude Desktop","how does X work in vantagepoint","PDM UX QE Documentation"],
+["repo-native","Any","Claude Desktop","use the repo's own skill","Developer QE Automation"],
+["tech-plan","Exploring","Claude Code","/tech-plan <PBI>","Developer"],
+["server-code","Building","Claude Code","/server-code <file>","Developer"],
+["client-code","Building","Claude Code","/client-code <app>","Developer"],
+["server-unit-test","Building","Claude Code","/server-unit-test <Class>","Developer"],
+["client-unit-test","Building","Claude Code","/client-unit-test","Developer"],
+["api-test","Building","Claude Code","/api-test <Controller>","Developer QE"],
+["performance-analysis","Building","Claude Code","/performance-analysis <query>","Developer"],
+["code-review (PR Reviewer)","Building","Claude Code","/code-review","Developer SM"],
+["pr-create","Building","Claude Code","/pr-create <work item>","Developer"],
+["test-case-creator","Verifying","Claude Code","/test-case-creator <PBI>","QE"],
+["playwright","Verifying","Claude Code","/playwright","Automation QE"],
+["qe-automation-plan","Verifying","Claude Code","automation coverage for PBI <id>","Automation QE"],
+["bug-create","Verifying","Claude Code","/bug-create","QE"],
+["bug-rca","Verifying","Claude Code","/bug-rca <Bug>","QE"],
+["release-found","Verifying","Claude Code","/release-found <Bug>","QE Developer"],
+["tc-identify-performance","Verifying","Claude Code","/tc-identify-performance <PBI>","QE"],
+["final-certification","Verifying","Copilot","/final-certification","QE"],
+["createdomainmap","Any","Claude Code","/createdomainmap","SM Developer QE"],
+["QE and PW agents (Script Writer, Reviewer, Debugger, Analyst, Bug Creator, TC Author, others)","Verifying","Copilot","Pick the agent in Copilot Chat","QE Automation"]
+];
+let skRole="All";
+
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function el(t,a,h){const e=document.createElement(t);if(a)Object.assign(e,a);if(h!==undefined)e.innerHTML=h;return e}
+function drawSys(){
+  document.getElementById('sysTable').innerHTML='<tr><th>Generic name</th><th>What it holds</th><th>Vantagepoint</th><th>Your product</th></tr>'+SYS.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td contenteditable="true" aria-label="Your product: ${esc(r[0])}"></td></tr>`).join('');
+}
+function drawTerms(q){
+  const dl=document.getElementById('termList');dl.innerHTML='';
+  q=(q||'').toLowerCase();let last='';
+  TERMS.filter(t=>!q||t[0].toLowerCase().includes(q)||t[1].toLowerCase().includes(q)).forEach(t=>{
+    const L=t[0].replace(/[^A-Za-z]/,'').charAt(0).toUpperCase()||'#';
+    if(L!==last){dl.appendChild(el('div',{className:'letter',textContent:L}));last=L}
+    const stg=t[2]?t[2].split(',').map(n=>`Stage ${n}`).join(', '):'';
+    dl.appendChild(el('dt',0,esc(t[0])+(stg?`<span class="stage">${stg}</span>`:'')));
+    dl.appendChild(el('dd',0,esc(t[1])));
+  });
+}
+function drawSkills(){
+  const chips=document.getElementById('skillChips');chips.innerHTML='';
+  ["All","PDM","UX","Developer","QE","Automation","Documentation","SM"].forEach(r=>{const b=el('button',{className:'chip'+(r===skRole?' on':''),textContent:r});b.onclick=()=>{skRole=r;drawSkills()};chips.appendChild(b)});
+  const rows=SK.filter(s=>skRole==="All"||s[4].split(' ').includes(skRole));
+  document.getElementById('skillTable').innerHTML='<tr><th>Skill</th><th>Stage</th><th>Runs in</th><th>What you say</th></tr>'+rows.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${s[1]}</td><td>${s[2]}</td><td>${esc(s[3])}</td></tr>`).join('');
+}
+document.getElementById('termSearch').oninput=e=>drawTerms(e.target.value);
+drawSys();drawTerms();drawSkills();
+</script>
+</body>
+</html>
