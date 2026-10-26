@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-SDLC Enablement Glossary</title>
+<style>
+:root{
+  --bg:#f7f8fa;--card:#fff;--ink:#1d2330;--mute:#5b6577;--line:#dde1e8;--accent:#1f5fbf;
+  --s1:#8a94a6;--s2:#7b4fd0;--s3:#1f7fbf;--s4:#1f9d6e;--s5:#d98a1c;--s6:#c0455a;
+  --warn-bg:#fff4dc;--warn-ink:#7a4d00;--ok-bg:#e3f5ec;--ok-ink:#14583b;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#14171d;--card:#1c2029;--ink:#e8ebf1;--mute:#9aa4b5;--line:#2c3240;--accent:#6aa3f5;
+  --warn-bg:#3a2e12;--warn-ink:#f1c36a;--ok-bg:#12372a;--ok-ink:#7fd9ad;}
+}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{padding:28px 24px 8px;max-width:1100px;margin:0 auto}
+h1{margin:0 0 4px;font-size:26px}
+header p{margin:0;color:var(--mute);max-width:760px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-top:16px}
+nav div{max-width:1100px;margin:0 auto;padding:8px 24px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav a{color:var(--ink);text-decoration:none;padding:5px 11px;border-radius:999px;border:1px solid var(--line);font-size:13px;background:var(--card)}
+nav a:hover{border-color:var(--accent);color:var(--accent)}
+main{max-width:1100px;margin:0 auto;padding:8px 24px 60px}
+section{margin-top:34px}
+h2{font-size:20px;margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 14px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.legend{font-size:13px;color:var(--mute);margin:0 0 12px}
+/* stepper */
+.stepper{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px}
+.step{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 8px;cursor:pointer;text-align:center;border-top:5px solid var(--c);position:relative;font-size:13px}
+.step b{display:block;font-size:14px}
+.step small{color:var(--mute)}
+.step.sel{outline:2px solid var(--accent)}
+.step.done::after{content:"\2713";position:absolute;top:4px;right:8px;color:var(--ok-ink);font-weight:700}
+.step.dim{opacity:.4}
+@media(max-width:760px){.stepper{grid-template-columns:repeat(2,1fr)}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;border-left:6px solid var(--c)}
+.panel h3{margin:0 0 2px;font-size:18px}
+.panel .where{color:var(--mute);font-size:13px;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.panel h4{margin:10px 0 3px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)}
+.panel ul{margin:0;padding-left:18px}
+.panel li{margin:2px 0}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;background:var(--bg);border:1px solid var(--line);margin:1px 3px 1px 0;color:var(--mute)}
+.tag.out{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent}
+.mine{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.mine label{font-size:14px;display:flex;gap:8px;align-items:center;font-weight:600}
+.mine textarea{width:100%;min-height:60px;margin-top:8px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+/* board */
+.board{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.col{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:8px;padding:8px 6px;font-size:12px;min-height:84px}
+.col b{display:block;font-size:12.5px;margin-bottom:3px}
+.col span{color:var(--mute)}
+@media(max-width:900px){.board{grid-template-columns:repeat(4,1fr)}}
+.beforeboard{font-size:13px;color:var(--mute);margin:0 0 8px}
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.card h3{margin:0 0 4px;font-size:15px}
+.card p{margin:4px 0;font-size:13.5px}
+.card .meta{font-size:12.5px;color:var(--mute)}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;margin-right:4px}
+.badge.ext{background:var(--warn-bg);color:var(--warn-ink)}
+.badge.int{background:var(--ok-bg);color:var(--ok-ink)}
+.badge.st{color:#fff}
+.unknown{background:var(--warn-bg);color:var(--warn-ink);border-radius:6px;padding:5px 8px;font-size:12.5px;margin-top:6px}
+/* terms */
+.search{width:100%;max-width:420px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;margin-bottom:10px}
+.terms dt{font-weight:700;margin-top:10px}
+.terms dd{margin:2px 0 0;color:var(--ink)}
+.terms dt .stage{font-weight:500;font-size:11px;margin-left:6px;color:var(--mute)}
+.letter{font-size:13px;color:var(--accent);font-weight:700;margin-top:16px;border-bottom:1px solid var(--line)}
+/* table */
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--card)}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+td[contenteditable]{background:var(--warn-bg);color:var(--warn-ink);min-width:140px}
+code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:12.5px}
+.summary{white-space:pre-wrap;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:10px;display:none}
+button.act{border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:8px;padding:6px 14px;font:inherit;cursor:pointer}
+footer{max-width:1100px;margin:0 auto;padding:0 24px 40px;color:var(--mute);font-size:13px}
+.rc{border-left-color:var(--accent)}
+.rc h4{margin:16px 0 4px}
+.rc .vid{display:inline-block;margin:2px 0 6px;font-size:13px;color:var(--accent)}
+.say{display:inline-block;font:12.5px ui-monospace,Menlo,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin:2px 4px 2px 0}
+.chk{display:flex;gap:8px;align-items:flex-start;margin:3px 0;font-size:14px}
+.chk input{margin-top:4px}
+.chk.on span{text-decoration:line-through;color:var(--mute)}
+.qa{border-top:1px solid var(--line);padding:6px 0}
+.qa summary{cursor:pointer;font-weight:600;font-size:14px}
+.qa p{margin:4px 0 2px;font-size:14px}
+.rc details>summary.big{font-weight:700;font-size:15px;cursor:pointer;margin-top:16px}
+@media print{nav,.chips,button.act{display:none}.panel{display:block!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI-SDLC Enablement Glossary</h1>
+  <p>A companion to the AI-SDLC Camp. Keep it open while you work: where you are in the six stages, what each stage produces, which artifacts live outside the camp, and what the words mean. Examples are Vantagepoint's, as in the camp. Fill in your product's names in the yellow cells.</p>
+</header>
+<nav><div>
+  <a href="#track">Stage tracker</a><a href="#cards">Role cards</a><a href="#board">Board columns</a><a href="#artifacts">Artifacts and places</a><a href="#systems">Your product's systems</a><a href="#terms">Terms A to Z</a><a href="#skills">Skills</a>
+</div></nav>
+<main>
+
+<section id="track">
+  <h2>1. Stage tracker</h2>
+  <p class="sub">Six stages, one chain of artifacts. Pick your role to highlight your stages, click a stage for detail, and mark stages as you finish them.</p>
+  <div class="chips" id="roleChips"></div>
+  <div class="stepper" id="stepper"></div>
+  <div class="panel" id="panel"></div>
+  <div style="margin-top:12px"><button class="act" id="sumBtn">Copy my progress summary</button></div>
+  <div class="summary" id="summary"></div>
+  <p class="legend">Progress and notes live on this page only while it is open. Use the summary button to save them somewhere you keep.</p>
+</section>
+
+<section id="cards">
+  <h2>2. Role cards</h2>
+  <p class="sub">The seven quick cards from Module 5, in full: what changes for you, the phrases you type, the checklists, your first week, and the questions the team has already answered. Tick checklist items as you go. Commands and record numbers are Vantagepoint's.</p>
+  <div class="chips" id="cardChips"></div>
+  <div class="panel rc" id="rc"></div>
+</section>
+
+<section id="board">
+  <h2>3. Board columns</h2>
+  <p class="sub">Framing and Feature Review happen before the board, on the Feature. The Kanban board tracks PBIs in eight columns once the release plan is defined. Column names are the process vocabulary; check your board for the state names your team uses.</p>
+  <p class="beforeboard"><b>Before the board:</b> Proposed, then Framing, then Feature Review, then Release plan defined.</p>
+  <div class="board" id="boardStrip"></div>
+</section>
+
+<section id="artifacts">
+  <h2>4. Artifacts and places</h2>
+  <p class="sub">The things you will make, find or be asked about. Items marked <span class="badge ext">Outside the camp</span> live in another system, so the camp can only point at them. Items marked <span class="badge int">Described in camp</span> are explained in the modules.</p>
+  <div class="chips" id="artChips"></div>
+  <div class="cards" id="artCards"></div>
+</section>
+
+<section id="systems">
+  <h2>5. Your product's systems</h2>
+  <p class="sub">The camp uses generic names so the process reads the same everywhere. Vantagepoint's instances are shown. Fill in the yellow cells for your product. Click a cell to type.</p>
+  <table id="sysTable"></table>
+</section>
+
+<section id="terms">
+  <h2>6. Terms A to Z</h2>
+  <input class="search" id="termSearch" placeholder="Search terms (try: spec, PBI, frame, OPEN)">
+  <dl class="terms" id="termList"></dl>
+</section>
+
+<section id="skills">
+  <h2>7. Skills by stage and role</h2>
+  <p class="sub">What you say, and where it runs. Names are Vantagepoint's. Your product's plugin and repository use the same skills under their own names where they differ. The plugin repository's <code>docs/SKILL-ROUTING-CATALOG.md</code> is the authority when two skills overlap.</p>
+  <div class="chips" id="skillChips"></div>
+  <table id="skillTable"></table>
+</section>
+
+</main>
+<footer>Built from AI-SDLC Camp v3 (updated 23 October 2026). Where the camp does not say where something lives, this page says so. Ask your product's AI-SDLC lead.</footer>
+
+<script>
+const STAGES=[
+{n:1,name:"Proposed",c:"var(--s1)",where:"Before the board. PDM prep and prioritization.",roles:["PDM"],door:"No AI-SDLC skill runs",
+ does:["An idea enters the roadmap tool from the ideas portal or a PDM and is promoted to a Feature.","The roadmap-to-work-tracker sync creates the matching Feature record. If it has not, the spec skill offers to create it later."],
+ makes:["Roadmap Feature with its linked idea","Plain-language roadmap description (2 to 4 sentences)","A status framing accepts (open, not Done, Released or Rejected)"],
+ gate:"A Feature exists with a linked idea. Check that the Description does not sync back from roadmap to tracker once a spec exists, or the spec gets overwritten.",
+ skills:["None"],board:"None"},
+{n:2,name:"Framing",c:"var(--s2)",where:"Before the board. During release planning, ahead of Feature Review. Claude Desktop.",roles:["PDM","UX","Developer","Documentation"],door:"Claude Desktop (plugin)",
+ does:["PDM runs framing with check-ins with the tech lead. Not done alone.","Claude retrieves the Feature, ideas, help content and context, drafts a brief, and challenges it section by section.","PDM confirms the problem statement, scope and related capabilities, builds the outcomes grid, approves the frame, and confirms each write."],
+ makes:["Frame Artifact: 18 sections, one Notion page per Feature","Feature in the work tracker, number written into the frame","First-draft Capability Spec on the Feature, plus default child PBI","Lo-fi wireframe set, when the prototype direction calls for one"],
+ gate:"PDM approves the frame. Nothing is written without an explicit confirm. Framing closes with the PDM choosing the roadmap status.",
+ skills:["framing","pm-outcome-grid-builder","vantagepoint-mockup","deltek-notion-frame-home","capability-spec (mode a)"],board:"None (before the board)"},
+{n:3,name:"Exploring",c:"var(--s3)",where:"Feature Review (before the board), then Planned and Requirements Collab (on the board).",roles:["PDM","Developer","QE","Automation","UX","Documentation","Scrum Master / Team Owner"],door:"Claude Desktop for the spec, Claude Code for the Tech-Plan",
+ does:["Feature Review: whole team works the frame and draft spec. PBIs are created and estimated. No Tech-Plan yet.","Between meetings, PDM feeds the transcript to the spec skill and accepts, edits or rejects each proposal.","Walk the considerations checklist and outcome measurement. Disposition every item.","Requirements Collab, one PBI at a time: its slice of the spec and mock-up are finalized, and the developer writes the Tech-Plan against the real code."],
+ makes:["Finalized Capability Spec (Acceptance Criteria and Description)","PBIs created and estimated, spikes as their own PBIs","Tech-Plan and Research Findings per PBI (local files)","Hi-fi mock-up where the feature needs one (UX, by hand)","Design Considerations audit and Update Summary"],
+ gate:"Spec close: every outcome and consideration dispositioned, follow-ups resolved, [OPEN] resolved. Per PBI: its spec slice and Tech-Plan are final, then it moves to Ready for Dev.",
+ skills:["capability-spec (modes b, c, d, e)","tech-plan","deltek-azure-devops-lookup"],board:"Planned, Requirements Collab"},
+{n:4,name:"Building",c:"var(--s4)",where:"Board: Ready for Dev, In Dev, In PR. Claude Code.",roles:["Developer","QE","PDM","Scrum Master / Team Owner"],door:"Claude Code in the product repository",
+ does:["Code against the Tech-Plan, then unit tests, API tests and the performance check.","QE creates test cases in parallel and the feature team reviews them.","Recorded dev demo hands the work to QE.","Developer runs the PR Reviewer, raises the PR, reviewers approve."],
+ makes:["Code and unit, API tests","Test cases (QE)","Recorded dev demo","Approved, merged PR linked to the work item"],
+ gate:"Approved PR within the 24-hour review SLA. Developer moves the card to In Testing. Dev, QE and Automation work is tracked as Tasks under the PBI.",
+ skills:["tech-plan","server-code","client-code","server-unit-test","client-unit-test","api-test","performance-analysis","test-case-creator","code-review","pr-create"],board:"Ready for Dev, In Dev, In PR"},
+{n:5,name:"Verifying",c:"var(--s5)",where:"Board: In Testing, In Bug Fixing. Claude Code, Copilot for the QE agents.",roles:["QE","Automation","Developer"],door:"Claude Code and Copilot Chat",
+ does:["QE runs manual testing from the dev demo and logs bugs.","Automation runs the automation plan and writes Playwright tests after check-in.","Bugs get root cause analysis and a severity. Fixes follow the same chain."],
+ makes:["Executed test cases","Automation plan and Playwright scripts","Bugs with RCA notes","Release-found triage when needed"],
+ gate:"All Sev 1 to Sev 3 bugs fixed and the automation plan cross-checked. Any open Sev 1 to 3 bug sends the PBI to In Bug Fixing.",
+ skills:["test-case-creator","bug-create","bug-rca","release-found","tc-identify-performance","qe-automation-plan","playwright"],board:"In Testing, In Bug Fixing"},
+{n:6,name:"Released",c:"var(--s6)",where:"Board: Done.",roles:["Scrum Master / Team Owner","PDM","Documentation"],door:"By hand today",
+ does:["Scrum Master closes the PBIs. PDM closes the Feature and picks the roadmap status.","Documentation writes release notes from the spec once a PBI is Done. PDM reviews.","PDM marks the frame complete and measures outcomes against the frame.","Everyone feeds the loop: anything confusing, wrong or slow goes into the skill feedback log."],
+ makes:["Closed PBIs and Feature","Release notes in the work tracker field","Frame marked complete, outcomes measured","Feedback log entries"],
+ gate:"Done is two actions: Scrum Master closes PBIs, PDM closes the Feature. Release notes belong to Documentation.",
+ skills:["deltek-aha-lookup (status)","None for closing"],board:"Done"}
+];
+const ROLES=["Everyone","PDM","UX","Developer","QE","Automation","Documentation","Scrum Master / Team Owner"];
+let role="Everyone",sel=1;const done={},notes={};
+
+const BOARD=[
+["Planned","Exploring",3,"Committed PBIs wait in priority order. Not a roadmap status."],
+["Requirements Collab","Exploring",3,"Per PBI: spec slice, mock-up and Tech-Plan finalized."],
+["Ready for Dev","Building",4,"Queue column, no tasks. Scrum Master watches for bottlenecks."],
+["In Dev","Building",4,"Code, tests, test cases, dev demo."],
+["In PR","Building",4,"PR Reviewer, approvals, 24-hour SLA."],
+["In Testing","Verifying",5,"Manual and automated testing."],
+["In Bug Fixing","Verifying",5,"Sev 1 to 3 bugs fixed, RCA."],
+["Done","Released",6,"PBIs closed, release notes, outcomes."]
+];
+
+/* artifacts: [name, kind(ext/int), stage, where, madeBy, note, unknownText] */
+const ART=[
+["Roadmap Feature and linked idea","ext",1,"Roadmap tool (Aha, VP2 workspace for Vantagepoint)","PDM","Idea carries customer language, votes and organizations. Promote the idea, don't create a Feature with none."],
+["Frame Artifact","ext",2,"Frame home: Notion, Framing Documents database","PDM with framing skill","18 sections. One page per Feature, keyed by roadmap Feature number. Wireframes embedded under section 18."],
+["Work tracker Feature (the spec)","ext",2,"Work tracker (ADO on-prem TFS for Vantagepoint)","Sync, or spec skill","Spec lives in Acceptance Criteria (build-ready) and Description (human reference)."],
+["Default child PBI","int",2,"Work tracker, under the Feature","Spec skill","Thin reference. This is what dev picks up first."],
+["Lo-fi wireframe set","int",2,"Embedded in the frame (section 18)","Mockup skill, PDM-initiated","One to four HTML wireframes. Framing can close without one."],
+["PDM Considerations checklist","ext",3,"Canonical SharePoint document","Product management","About 30 items. Source of the considerations pass.","Your product's own checklist replaces Vantagepoint's. Ask your PDM lead where it is."],
+["Meeting transcript or notes","ext",3,"A team convention, not set by the camp","PDM uploads by hand","Input to spec mode b. The camp doesn't say who captures it or where it is stored.","Where transcripts live is not stated. Agree it in your first Feature Review."],
+["PBIs and Tasks","ext",3,"Work tracker board","Team, skill creates on confirm","Thin slices. Dev, QE and Automation work hangs under them as Tasks."],
+["Team Follow-ups, Update Summary, Design Considerations audit","int",3,"Inside the spec (Description field)","Spec skill","The dated, auditable record of what was decided and considered."],
+["Hi-fi mock-up","ext",3,"UX tool, attached or pasted into the spec","UX, by hand","Only for features that need one. Created after the release plan is defined.","The UX tool and where mock-ups are stored are not stated."],
+["Tech-Plan and Research Findings","ext",3,"Local working files (not attached to the work item)","Developer, tech-plan skill","Too large to attach. One per Feature or one per PBI is a team call.","Local files: agree where your team keeps them so QE and the PDM can find them."],
+["Database change request (DCR)","ext",4,"Standard change-request process","Developer","Run in parallel with code. Integration tests need it applied to the dev database."],
+["Recorded dev demo","ext",4,"Not stated in the camp","Developer","Hands the work to QE. PDM and QE attend.","Where recordings are stored is not stated."],
+["Test cases","ext",4,"Work tracker, linked to the work item","QE, test-case-creator","Generated from the spec's use cases after JSON approval."],
+["Pull request","ext",4,"Work tracker, linked to the work item","Developer, pr-create","PR Reviewer runs first. 24-hour review SLA."],
+["Automation plan","ext",5,"A Markdown report in the session, not the repository or tracker","Automation, qe-automation-plan","Each test case gets a layer: unit, API, UI or API plus UI. Cross-checked before Done.","It does not persist by default. Save it where your team can find it."],
+["Bugs and QE RCA notes","ext",5,"Work tracker, Affects link to the PBI","QE, bug-create, bug-rca","Severity 1 to 3 blocks Done."],
+["Release notes","ext",6,"Work tracker release notes field (RelNotesDescription in Vantagepoint)","Documentation","Written from the spec once a PBI is Done. PDM reviews."],
+["Skill feedback log","ext",6,"Not stated in the camp. 'Your team's skill feedback log or the engineering channel'","Everyone","Log every bug, friction point and idea so the next feature is easier.","The camp never says where this is. Ask your lead and write it in here."],
+["Plugin and install link","ext",0,"GitHub marketplace (private repository, collaborator access needed). Fallback: a .plugin file from the plugin owner","Plugin owner","Remove old deltek-core, deltek-vantagepoint or deltek-ai plugins first.","Whether your product has a plugin, and who grants access, is not in the camp. Ask your AI-SDLC lead."],
+["Connectors","ext",0,"Claude Desktop, Settings, Connectors, authorized with your own account","You","Vantagepoint: Aha, Azure DevOps, Notion, Microsoft 365 (SharePoint). Run 'check connectors' first. Expired ADO tokens are the common failure."],
+["KnowledgeBase (START-HERE.md, domain folders)","ext",0,"knowledgebase/ folder in the product repository","Team owners, createdomainmap","Check whether your domain is populated. Empty means thinner grounding, not a refusal.","Your domain's status is in the Populated Domains table in START-HERE.md."],
+["SKILL-ROUTING-CATALOG.md","ext",0,"Plugin repository, docs folder","Plugin team","Tells you which skill to use when two overlap."],
+["Support channel","ext",0,"Agentic AI Teams channel (the camp calls it 'the engineering channel')","Core team","Where to ask when a connector will not come back.","Confirm the right channel for your product."]
+];
+const ARTCHIPS=["All","Outside the camp","Described in camp","Stage 1","Stage 2","Stage 3","Stage 4","Stage 5","Stage 6","Setup"];
+let artFilter="All";
+
+const SYS=[
+["Roadmap tool","Demand: ideas, Features, releases","Aha (deltek1.aha.io, VP2)"],
+["Frame home","Scope contract, one page per Feature","Notion, Framing Documents database"],
+["Work tracker","Feature, spec, PBIs, Tasks, bugs, test cases, PRs","Azure DevOps on-prem TFS (tfs.deltek.com/tfs/Deltek)"],
+["Product repository","Code, tests, engineering skills, KnowledgeBase","Vantagepoint repository (Maconomy uses Perforce)"],
+["Plugin","Product, UX and Documentation door","dvp (Deltek Vantagepoint AI). Type /dvp"],
+["Help content","How it works today (grounding)","Vantagepoint Help, read through the help lookup"],
+["Feedback log","Where friction goes","Not stated in the camp"]
+];
+
+const TERMS=[
+["AC / Acceptance Criteria","The Feature field holding the build-ready spec sections. What AI, dev and QE build and test from.","3"],
+["AI-DLC","Another name some pages use for the same process as AI-SDLC.",""],
+["Ask Dela","Deltek's AI assistant. Public APIs must be made available to it. Private APIs optionally.","3"],
+["Automation plan","Automation's review of every test case on a PBI, assigning a layer and a status. Cross-checked before Done.","5"],
+["Board","The Kanban board of PBIs in eight columns, from Planned to Done. Framing and Feature Review are not columns.","3"],
+["Capability Spec","The implementation contract for a Feature, on the Feature's AC and Description fields. One per Feature. Drafted at framing, finalized in Exploring.","2,3"],
+["Category","A navigation bucket of the KnowledgeBase that answers one business question. Never the unit of content.",""],
+["Considerations","The roughly 30-item PDM checklist walked at spec time. Each item gets one disposition.","3"],
+["Database change request (DCR)","The standard process for schema changes, run in parallel with code.","4"],
+["Default child PBI","The one thin PBI created automatically with the spec. What dev picks up.","2"],
+["Description","The Feature field holding human-reference spec sections: context, history and audit.","3"],
+["Design Review","Inside Requirements Collab, each PBI's implementation slice is reviewed against the spec.","3"],
+["Dev demo","The recorded demonstration of a working PBI to the PDM and QE at the end of In Dev. The handoff into testing.","4"],
+["Disposition","One of: Yes in spec, Yes new PBI, Yes existing PBI, No with a reason, Deferred.","3"],
+["Domain","The unit of the KnowledgeBase: one self-contained folder with overview, work items, help, conventions and code references.",""],
+["dvp","Deltek Vantagepoint AI, the Claude Desktop plugin for Vantagepoint. Type /dvp first in every new chat. Other products have their own plugin.","0"],
+["Enable Mechanism","How a feature is activated: new Opt-In, new Setting, new Security permission, or none.","3"],
+["Exploring","Stage 3. Feature Review before the board, then Planned and Requirements Collab on it.","3"],
+["Feature","The unit of scope and of specification. The frame and the spec both attach to it.","1"],
+["Feature path","The route a Feature takes before the board: Framing, Feature Review, release plan defined.","2,3"],
+["Feature Review","The whole-team meeting, before the board, that works the frame and draft spec and creates and estimates PBIs. The Tech-Plan comes later.","3"],
+["Feature team","One full-stack engineer, the PDM and a QE for a standard feature. Meets three to five days a week. Not a standup.","3"],
+["Frame / Frame Artifact","The 18-section scope contract in Notion, one page per Feature, wireframes embedded.","2"],
+["Frame home","The generic name for where the frame lives. Notion's Framing Documents database for Vantagepoint.","2"],
+["Hi-fi mock-up","High-fidelity design UX produces with the PDM after the release plan is defined, by hand, for features that need one.","3"],
+["High-Value Org","A voting organization with more than 3,000 employees or more than $1M revenue, flagged during framing.","2"],
+["Hub domain","A master-data domain other domains reference by identity (Firm, Contact, Employee Master and others).",""],
+["In Bug Fixing","Board column where a PBI sits while any Sev 1 to 3 bug is open.","5"],
+["KnowledgeBase","The product's memory for the skills: work items, help, code references and conventions, by category and domain, in the knowledgebase/ folder.","0"],
+["[OPEN]","Inline marker for anything unresolved in the spec. Must be resolved at spec close, except spikes.","3"],
+["Opt-In","A way to gate a feature. Needs two follow-up PBIs (Hide/Enable, Remove) created by hand for now.","3"],
+["Outcome grid","The nine-element customer outcome grid built during framing at hypothesis grade. The frame must carry measurable outcomes.","2"],
+["OVERVIEW.md","A domain's map. The first file to read in a domain.",""],
+["PBI","Product Backlog Item. The unit of implementation work. A thin slice of the spec. Dev, QE and Automation work hangs under it as Tasks.","2,3"],
+["PDM","Product Manager, Deltek's product management role. Not 'PM', which means the project manager persona our products serve.","1"],
+["Persona","A short instruction file telling Claude which skills to run for a role. The /dvp menu has six.","0"],
+["Planned","The first column of the PBI board. Not a roadmap status.","3"],
+["Propose, confirm, write-back","The write discipline in every skill: propose the change in plain language, wait for your go, then report what was written. Reads are free.","0"],
+["Quick path, deep path","The two reading depths for the KnowledgeBase: targeted task or full audit.",""],
+["Ready for Dev","A queue column with no tasks, so the Scrum Master can see bottlenecks.","4"],
+["Release plan defined","The milestone after Feature Reviews when release scope is committed and PBIs land on the board.","3"],
+["Related capabilities","Framing's Dependency, Overlap and Replacement classification of related features.","2"],
+["Repo-Native","The plugin persona that discovers and uses the product repository's own skills. Engineering personas check it first.","0"],
+["Requirements Collab","Board column inside the sprint where, one PBI at a time, the spec slice, mock-up and Tech-Plan are finalized before Ready for Dev.","3"],
+["Roadmap tool","Generic name for the system of demand. Aha for Vantagepoint.","1"],
+["Sev 1 to Sev 3","Bug severities that block Done. Sev 4 and 5 do not.","5"],
+["Skill","A named capability Claude runs, such as framing or tech-plan. Run by typing what you want, or a slash command in Claude Code.","0"],
+["Skill feedback log","Where you record bugs, friction and ideas about the skills. The camp names it but never says where it is.","6"],
+["Spike","An investigation PBI created at Feature Review. [SPIKE-#] marks the requirement waiting on it.","3"],
+["START-HERE.md","The KnowledgeBase entry point: categories, populated domains, structure and reading rules.",""],
+["Tasks","The work item type under a PBI for Dev, QE and Automation work.","4"],
+["Team Follow-ups","The spec's list of in-flight work during Exploring.","3"],
+["Team Owner","The engineering lead accountable for a team's reviews and approvals. In Feature Review and Requirements Collab.","3"],
+["Tech-Plan","The technical plan with Research Findings, written by the developer in Requirements Collab against the real code. Final before Ready for Dev. Local working files.","3,4"],
+["Use case (UC-#)","A testable scenario in the spec: actor, preconditions, trigger, flows, outcomes. QE and automation build from them.","3"],
+["Work tracker","Generic name for the system holding the Feature, spec, PBIs, Tasks, bugs and test cases. ADO on-prem TFS for Vantagepoint.","2"],
+["Write and purge","For multi-record scans: process a batch, write findings down, drop the records from context, move on.",""]
+];
+
+const SK=[
+["connector-check","Any","Claude Desktop","check connectors","PDM UX Documentation SM"],
+["framing","Framing","Claude Desktop","let's frame VP2-1234","PDM UX"],
+["pm-outcome-grid-builder","Framing","Claude Desktop","build the outcome grid","PDM"],
+["vantagepoint-mockup","Framing","Claude Desktop","generate wireframe","PDM UX"],
+["deltek-notion-frame-home","Framing","Claude Desktop","save the frame to Notion","PDM"],
+["capability-spec","Exploring","Claude Desktop","start capability spec for VP2-1234 / update the spec based on these notes / walk considerations / prep for next meeting / close the spec","PDM Developer QE UX Documentation"],
+["deltek-aha-lookup","Any","Claude Desktop","check Aha / what's the status of feature VP2-1234","PDM SM Documentation"],
+["deltek-azure-devops-lookup","Any","Claude Desktop","check ADO / find the work item","PDM SM Documentation"],
+["vantagepoint-help-lookup","Any","Claude Desktop","how does X work in vantagepoint","PDM UX QE Documentation"],
+["repo-native","Any","Claude Desktop","use the repo's own skill","Developer QE Automation"],
+["tech-plan","Exploring","Claude Code","/tech-plan <PBI>","Developer"],
+["server-code","Building","Claude Code","/server-code <file>","Developer"],
+["client-code","Building","Claude Code","/client-code <app>","Developer"],
+["server-unit-test","Building","Claude Code","/server-unit-test <Class>","Developer"],
+["client-unit-test","Building","Claude Code","/client-unit-test","Developer"],
+["api-test","Building","Claude Code","/api-test <Controller>","Developer QE"],
+["performance-analysis","Building","Claude Code","/performance-analysis <query>","Developer"],
+["code-review (PR Reviewer)","Building","Claude Code","/code-review","Developer SM"],
+["pr-create","Building","Claude Code","/pr-create <work item>","Developer"],
+["test-case-creator","Verifying","Claude Code","/test-case-creator <PBI>","QE"],
+["playwright","Verifying","Claude Code","/playwright","Automation QE"],
+["qe-automation-plan","Verifying","Claude Code","automation coverage for PBI <id>","Automation QE"],
+["bug-create","Verifying","Claude Code","/bug-create","QE"],
+["bug-rca","Verifying","Claude Code","/bug-rca <Bug>","QE"],
+["release-found","Verifying","Claude Code","/release-found <Bug>","QE Developer"],
+["tc-identify-performance","Verifying","Claude Code","/tc-identify-performance <PBI>","QE"],
+["final-certification","Verifying","Copilot","/final-certification","QE"],
+["createdomainmap","Any","Claude Code","/createdomainmap","SM Developer QE"],
+["QE and PW agents (Script Writer, Reviewer, Debugger, Analyst, Bug Creator, TC Author, others)","Verifying","Copilot","Pick the agent in Copilot Chat","QE Automation"]
+];
+let skRole="All";
+
+function el(t,a,h){const e=document.createElement(t);if(a)Object.assign(e,a);if(h!==undefined)e.innerHTML=h;return e}
+function roleMatch(s){return role==="Everyone"||s.roles.includes(role)}
+
+function drawChips(){
+  const c=document.getElementById('roleChips');c.innerHTML='';
+  ROLES.forEach(r=>{const b=el('button',{className:'chip'+(r===role?' on':''),textContent:r});b.onclick=()=>{role=r;if(ROLE2CARD[r]){cardRole=ROLE2CARD[r];drawCards()}drawChips();drawStepper();drawPanel()};c.appendChild(b)});
+}
+function drawStepper(){
+  const s=document.getElementById('stepper');s.innerHTML='';
+  STAGES.forEach(st=>{
+    const d=el('div',{className:'step'+(st.n===sel?' sel':'')+(done[st.n]?' done':'')+(roleMatch(st)?'':' dim')},`<b>${st.n}. ${st.name}</b><small>${st.board}</small>`);
+    d.style.setProperty('--c',st.c);d.onclick=()=>{sel=st.n;drawStepper();drawPanel()};s.appendChild(d);
+  });
+}
+function list(a){return '<ul>'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>'}
+function drawPanel(){
+  const st=STAGES[sel-1],p=document.getElementById('panel');p.style.setProperty('--c',st.c);
+  const roleTags=st.roles.map(r=>`<span class="tag">${r}</span>`).join('');
+  p.innerHTML=`<h3>Stage ${st.n}: ${st.name}</h3><div class="where">${st.where}</div>
+  <div class="grid2"><div><h4>What happens</h4>${list(st.does)}<h4>Who is involved</h4>${roleTags}<h4>Door</h4><span class="tag">${st.door}</span></div>
+  <div><h4>What it produces</h4>${list(st.makes)}<h4>Gate to leave the stage</h4><p style="margin:2px 0">${st.gate}</p><h4>Skills</h4>${st.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div></div>
+  <div class="mine"><label><input type="checkbox" id="doneBox" ${done[st.n]?'checked':''}> I've finished this stage for my feature</label>
+  <textarea id="noteBox" placeholder="Feature, links, what you produced, what was unclear. Stays on this page while it's open.">${notes[st.n]||''}</textarea></div>`;
+  document.getElementById('doneBox').onchange=e=>{done[st.n]=e.target.checked;drawStepper()};
+  document.getElementById('noteBox').oninput=e=>{notes[st.n]=e.target.value};
+}
+function drawBoard(){
+  const b=document.getElementById('boardStrip');
+  BOARD.forEach(([n,stg,num,d])=>{const st=STAGES[num-1];const c=el('div',{className:'col'},`<b>${n}</b><span>${stg}</span><br><span>${d}</span>`);c.style.setProperty('--c',st.c);b.appendChild(c)});
+}
+function drawArt(){
+  const chips=document.getElementById('artChips');chips.innerHTML='';
+  ARTCHIPS.forEach(a=>{const b=el('button',{className:'chip'+(a===artFilter?' on':''),textContent:a});b.onclick=()=>{artFilter=a;drawArt()};chips.appendChild(b)});
+  const box=document.getElementById('artCards');box.innerHTML='';
+  ART.filter(a=>{
+    if(artFilter==="All")return true;
+    if(artFilter==="Outside the camp")return a[1]==="ext";
+    if(artFilter==="Described in camp")return a[1]==="int";
+    if(artFilter==="Setup")return a[2]===0;
+    return a[2]===+artFilter.split(' ')[1];
+  }).forEach(a=>{
+    const st=a[2]===0?null:STAGES[a[2]-1];
+    const stBadge=st?`<span class="badge st" style="background:${st.c}">Stage ${a[2]}: ${st.name}</span>`:`<span class="badge st" style="background:var(--s1)">Setup</span>`;
+    const kind=a[1]==="ext"?'<span class="badge ext">Outside the camp</span>':'<span class="badge int">Described in camp</span>';
+    const c=el('div',{className:'card'},`<h3>${a[0]}</h3><div>${stBadge}${kind}</div>
+      <p><b>Lives in:</b> ${a[3]}</p><p><b>Made by:</b> ${a[4]}</p><p class="meta">${a[5]||''}</p>${a[6]?`<div class="unknown"><b>Find out:</b> ${a[6]}</div>`:''}`);
+    box.appendChild(c);
+  });
+}
+function drawSys(){
+  const t=document.getElementById('sysTable');
+  t.innerHTML='<tr><th>Generic name</th><th>What it holds</th><th>Vantagepoint</th><th>Your product</th></tr>'+SYS.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td contenteditable="true" aria-label="Your product: ${r[0]}"></td></tr>`).join('');
+}
+function drawTerms(q){
+  const dl=document.getElementById('termList');dl.innerHTML='';
+  q=(q||'').toLowerCase();let last='';
+  TERMS.filter(t=>!q||t[0].toLowerCase().includes(q)||t[1].toLowerCase().includes(q)).forEach(t=>{
+    const L=t[0].replace(/[^A-Za-z]/,'').charAt(0).toUpperCase()||'#';
+    if(L!==last){dl.appendChild(el('div',{className:'letter',textContent:L}));last=L}
+    const stg=t[2]?t[2].split(',').map(n=>`Stage ${n}`).join(', '):'';
+    dl.appendChild(el('dt',0,t[0]+(stg?`<span class="stage">${stg}</span>`:'')));
+    dl.appendChild(el('dd',0,t[1]));
+  });
+}
+function drawSkills(){
+  const chips=document.getElementById('skillChips');chips.innerHTML='';
+  ["All","PDM","UX","Developer","QE","Automation","Documentation","SM"].forEach(r=>{const b=el('button',{className:'chip'+(r===skRole?' on':''),textContent:r});b.onclick=()=>{skRole=r;drawSkills()};chips.appendChild(b)});
+  const rows=SK.filter(s=>skRole==="All"||s[4].split(' ').includes(skRole));
+  document.getElementById('skillTable').innerHTML='<tr><th>Skill</th><th>Stage</th><th>Runs in</th><th>What you say</th></tr>'+rows.map(s=>`<tr><td><b>${s[0]}</b></td><td>${s[1]}</td><td>${s[2]}</td><td>${s[3]}</td></tr>`).join('');
+}
+const VID="https://aisdlc-knowledge-production.up.railway.app/video/explainers/";
+const CARDS={
+PDM:{name:"Product Manager (PDM)",vid:"e01-role-pdm.mp4",vt:"about 3 minutes: The PDM: frame, spec, Feature",
+ changes:["You frame during release planning, from a Feature in the roadmap tool, with check-ins with the tech lead; framing is not done alone.","Framing ends with the first-draft capability spec on the work tracker Feature (the spec skill creates that Feature if the sync has not). You bring the frame and that draft to Feature Review instead of a deck.","Between meetings you feed the transcript to the skill and accept, edit or reject its proposals.","You disposition every consideration and outcome, and the audit block proves it. The frame carries measurable outcomes.","The team decides the carve-up and the estimates in the room; the skill creates the PBIs on your confirmation. After commitment you partner with UX on a hi-fi mock-up where the feature needs one.","You review test cases in the feature team meeting, attend the recorded dev demo, send the notifications the audit block flags, close the spec when the gates pass, and close the Feature at the end.","How it works today still comes from the official help content. Your domain's help/ and conventions/ folders in the KnowledgeBase are that content filtered to the domain, with the stated business and validation rules and their sources; when a spec needs the current rule, they are the quickest grounded answer. Check whether your domain is populated before you lean on grounded answers."],
+ sayH:"What you say (Claude Desktop)",say:["/dvp","check connectors","let's frame VP2-1234","generate wireframe","start capability spec for VP2-1234","update the spec for VP2-1234 based on these notes","walk considerations for VP2-1234","update the use cases for VP2-1234","prep for next meeting on VP2-1234","close the spec for VP2-1234","what's the status of feature VP2-1234"],
+ sayNote:"New chat: /dvp first, then the feature by its roadmap or work tracker number. Same chat as the framing: no number needed, for example start the capability spec.",
+ lists:[["Before the Feature Review",["Frame written to Notion, with measurable outcomes, read by product leadership","Roadmap description carries the summary and the Notion link","Feature exists in the work tracker (created by the sync or by the spec skill) and its number is in the frame","First-draft spec on the Feature; default child PBI exists; integration link points at the Feature","Tech lead check-in done; Documentation invited","Someone is capturing a transcript or notes"]],["Before you close",["Every consideration and outcome has a disposition","Follow-ups resolved, deferred with reason, or converted to PBIs","Every [OPEN] resolved; spikes have their PBI and their dependents are tagged","Hi-fi mock-up in the spec, or recorded as not needed","NOTIFICATION NEEDED items sent","Roadmap status chosen; frame status signaled"]]],
+ first:["Install the plugin from the marketplace, connect the connectors, run the connector check.","Frame one feature you own. Correct Current Behavior against the help content Claude cites. Bring the tech lead in for a check-in.","Start its capability spec straight from the frame; leave open items open.","Bring frame and draft to the Feature Review; capture the record; leave with PBIs created and estimated.","Process the record; walk considerations; prep the next meeting.","Log every bug, friction point and idea in your team's skill feedback log."],
+ faqH:"PDM questions the team has already answered",
+ faq:[["Do I need the whole solution figured out for the first draft?","No. Leave open items open; they are surfaced for the Feature Review."],["Which features fit?","Functional and technical features alike, with no special conditions for technical work. Exceptions: features that depend on a shared service not yet defined (frame the outcome, the spec waits), large in-flight features. Small quick wins may skip parts of framing by explicit decision."],["What size?","A releasable MVP that fits one release. One spec per Feature even when it has many PBIs; how to handle a spec that spans sprints is still being worked out."],["Do I need a Claude Project?","No. Output lives in the work tracker and Notion; a Project would duplicate data not everyone can reach."],["Will my chat be shared?","No. Engineers, QE, UX and Documentation read the output in the work tracker and start their own sessions from it."],["Update the spec or create a new one?","Same release: update. New release: do not update the prior spec; create a new Feature."],["Where do supporting documents live (statutory docs, sample calculations)?","Where you keep them today; reference the location in the spec."],["How are changes communicated?","The Update Summary carries the history; notify stakeholders by hand when the audit block flags it."],["Can one frame produce several specs?","The model is one frame, one spec, one Feature."],["Do I still estimate?","Yes. PBI and Feature estimation continue as today."]]},
+DEV:{name:"Developer",vid:"e02-role-developer.mp4",vt:"about 3.5 minutes: The Developer: the Tech-Plan and the In Dev sequence",
+ changes:["You are in the Feature Review and Requirements Collab; the carve-up, the spikes and the Tech-Plan are yours to shape. You write the Tech-Plan in Requirements Collab, once the PBI is committed and its slice of the spec is settled, and it is final before the PBI reaches Ready for Dev.","The Tech-Plan is built against the real code. You answer three to five questions; the skill does the research. It stays a local working file.","In Dev has a sequence: code, unit tests, test case review with QE and the PDM, dev test with the performance skill, recorded dev demo. The developer agent runs the skills for you. Your work is tracked as Tasks under the PBI, like QE's and Automation's.","Tests at three layers are generated, not deferred. The review runs before the PR, and again as the PR Reviewer on the PR. After merge you move the PBI to In Testing.","Bugs go through the same chain with the bug as input; all Sev 1 to 3 bugs are fixed before Done.","Claude Code is the preferred door; Copilot only where the QE agents live."],
+ sayH:"What you type (Claude Code, repo open)",say:["/tech-plan 2808724","/server-code code/server/VB/<App>/Server/<File>.vb","/client-code <app-name>","/server-unit-test <ClassName>","/client-unit-test","/api-test <Controller>","/performance-analysis <query or area>","/code-review","/pr-create 2808724"],
+ sayNote:"Or describe the task and let the deltek-developer agent sequence the chain.",
+ lists:[["Per PBI checklist",["This PBI's slice of the spec final on the Feature; Tech-Plan final","Tech-Plan and research findings saved locally and referenced from your notes","All plan questions answered; every NOT FOUND resolved or accepted","Database change request created and tracked if the schema changes","Out-of-scope guards honored; regression guards verified","Unit, API and client tests present or explicitly not required with a reason; performance skill run","Test cases reviewed with QE; dev demo held and recorded","Review verdict CLEAN, or every Warning judged; PR Reviewer run on the PR","PR linked to the work item; Definition of Done binary-complete; PBI moved to In Testing after merge"]]],
+ first:["Pull the repository; confirm the skills and the agent resolve in Claude Code; confirm the work tracker tools resolve.","Find your domain in knowledgebase/START-HERE.md and read its OVERVIEW.md once; before a tech plan, code/references.jsonl is the list of files that matter, with a summary each. If the domain is empty, ask your team owner when it is scheduled.","Run /tech-plan on one small PBI with a finished spec. Answer the questions honestly.","Execute one task with /server-code or /client-code; generate its tests; run the performance skill.","Run /code-review on the branch; read the report before fixing anything."],
+ faqH:"Developer questions",
+ faq:[["Agent or slash commands?","Either. The agent drives the chain and announces hand-offs; the commands run one step."],["The plan cites line numbers that are off.","Expected. The plan gives patterns and asks you to verify placement; the coding skill reads the real file."],["The KnowledgeBase has a stale or missing reference for my area.","The verified paths and routes in the Tech-Plan win; the plan says so explicitly in Before Coding. Tell your team owner; the fix is a re-run of the relevant step and a pull request, not a hand edit."],["Do I still write the Tech-Plan for a bug?","Not required; the coding skills take a bug as input. Use the plan for anything with multiple tasks or cross-layer change."],["Is the Tech-Plan per Feature or per PBI?","Your team's call; the skill works the same way either way."],["Where does the 'Defect Fixing skill' on the process diagram live?","It is not a separate skill today. Fix with the coding skills, then tests, review, PR."]]},
+QE:{name:"Quality Engineer (QE)",vid:"e03-role-qe.mp4",vt:"about 3.5 minutes: The QE: testable specs, test cases in parallel, the severity rule",
+ changes:["You are in the room from Feature Review on; the spec's Use Cases are written to be testable and you help make them so.","Test cases are generated from the spec's use cases during In Dev, before the dev test, and reviewed in the feature team meeting. Your work is tracked as Tasks under the PBI, like Dev's and Automation's.","You own the test cases end to end: authoring, review, execution and the bugs they find. Automation owns the automation plan and the Playwright scripts; its plan gives each of your test cases a layer (unit, API or UI) and a status, and it is cross-checked before the PBI is Done.","The recorded dev demo is your hand-off into manual testing. You run the manual pass alongside the automation that lands after check-in.","You apply the severity rule: any open Sev 1 to 3 bug sends the PBI to In Bug Fixing, and you move it.","Bugs, RCA and release-found triage each have a skill with strict field rules; the skill never fills a field it cannot ground.","Release certification templates for M1 to M6 are routed by one skill.","Bugs and test cases live in your domain's work-items/by-id/ in the KnowledgeBase with the full record, and relationships/ holds the formal links to test cases. Search the domain's bug titles before you log a bug; the RCA fields (RelFound, RCA notes) are in the record."],
+ sayH:"What you type (Claude Code, repo open)",say:["/test-case-creator 2808724","/bug-create","/bug-rca 1234567","/release-found 1234567","/tc-identify-performance 2808724","/final-certification"],
+ sayNote:"In Copilot Chat: the QE TC Author, QE Bug Creator, QE Analyst, QE RF and RCA Investigator and QE Release Certification agents.",
+ lists:[["Test case checklist",["Task created under the PBI","Output role chosen: manual, automation or hybrid","Duplicates searched by linked item, module and title, area path","One scenario per test case","Database flavor parameter set when a database is named","Navigation and field names verified, never invented","JSON reviewed and approved before creation; linked to the work item; reviewed in the feature team meeting"]],["Bug checklist",["All eight inputs provided by you; severity set honestly","Five-phase duplicate detection done","Right template; pre-flight checklist passed; JSON approved","Affects link to the PBI; Regression, Blocked, Assigned To and Priority left for humans","PBI moved to In Bug Fixing if the bug is Sev 1 to 3"]]],
+ first:["Read one finished spec's Use Cases and Requirements before its Feature Review.","Generate test cases for one PBI during its In Dev; bring them to the feature team meeting for review.","Watch one dev demo, then run the manual pass from it.","Log one real bug through the skill; apply the severity rule.","Run an RCA on one recently closed bug and check every required field landed."],
+ faqH:"QE questions",
+ faq:[["test-case-creator or qe-tc-generation?","Both exist in the repository and the routing catalog names both as the work-tracker-native choices. Follow your QE lead's guidance on which is the default for which case."],["How does manual testing run alongside automation?","Manual starts from the dev demo; automation lands after check-in and contributes to In Testing. The detailed cadence is a Dev and QE agreement per team."],["When are test cases generated?","During In Dev, before the dev test, reviewed in the feature team meeting; the exact point inside In Dev is your team's agreement."],["Does the automation initiative change the manual process?","No. More QEs focus on automation; the manual test case process is unchanged."],["Do I attend Feature Review?","Yes. Testability is decided there."],["Who decides which test cases get automated, and how?","Automation's plan does, test case by test case: unit, API, UI or API plus UI, with a status for each. You own the test cases; Automation owns the plan and the scripts."]]},
+AUTO:{name:"Automation Engineer",vid:"e04-role-automation.mp4",vt:"about 4 minutes: The Automation Engineer: planned with the feature, Playwright by default",
+ changes:["You are in the room at Feature Review and in the feature team meeting, so automation is planned with the feature, not after it.","You own the automation plan and the Playwright scripts; QE owns the test cases end to end. Once the PBI's test cases are approved you run the automation plan: every test case linked to the PBI gets a layer (unit, API, UI or API plus UI) and a status (Automated, Partially Automated, Planned, Rework or Not Automatable). The plan is cross-checked before the PBI is Done, and your work is tracked as Tasks under the PBI.","Scripts start from the approved test cases and checked-in code, and your tests contribute to In Testing.","Playwright is the standard for new automation; no new Rapise scripts.","The Playwright skill carries the framework's conventions in reference files and reads the matching one in full before every task; so should you.","Four phases: Plan, Resolve, Script, Review and Debug. Enter at the phase the task needs.","Layer discipline: Session, page objects, API objects, business objects, Forge, Localizer, settings. Each owns one thing.","Test cases are in your domain's work-items/by-id/test-cases/ in the KnowledgeBase, and the domain's help topics describe the flows you automate."],
+ sayH:"What you type",say:["automation coverage for PBI 2808724","automation gaps for PBI 2808724","/playwright","automate test case 1234567","create a page object for <area>","debug the test failure","review this e2e test"],
+ sayNote:"The plan runs as the read-only qe-automation-planner agent, in Claude Code or Copilot Chat; the scripts through /playwright or the PW Script Writer, PW Script Reviewer and PW Debugger agents in Copilot Chat.",
+ lists:[["Checklist",["Automation plan run on the PBI's approved test cases: a layer and a status for each; HTML report under docs/reviews in the Playwright tree; cross-checked before Done","Work item fetched; steps decomposed; test type chosen (sanity, CRUD, feature); area path named","Existing page objects, APIs and BOs resolved; missing ones built in order schema, API, page object, test","Every user-visible string through u.i18n(); every created entity torn down through TeardownStack","u.require() pre-conditions first; test.step titles readable as repro steps","Three-agent review run; Mandatory findings fixed","Failures diagnosed from artifacts with an RCA before code changes"]]],
+ first:["Run the Project Setup reference so tooling is in place.","Run the automation plan on one PBI with approved test cases and read the layer it assigned to each test case before you script anything.","Write one sanity test for your area following the example.","Trace one page object back to its front-end layout file with the Code Navigation reference.","Review the test with the review reference."],
+ faqH:"Automation questions",
+ faq:[["When do I start?","The plan, once the PBI's test cases are approved; the scripts, after the code is checked in. Your tests join In Testing."],["Does the plan write anything?","No. The planner agent is read-only: it reports, and a human decides and implements. It recommends Rapise retirements; it never performs them."],["Rapise or Playwright?","Playwright. Rapise is legacy; do not generate new Rapise scripts."],["A test is flaky.","Debug Failures reference first: terminal output, results.json, per-test artifacts, then an RCA, then code."]]},
+UX:{name:"UX Designer",vid:"e05-role-ux.mp4",vt:"about 3 minutes: The UX Designer: wireframes for scope, mock-ups for design",
+ changes:["A lo-fi wireframe set can exist at framing, generated from the frame's Prototype Direction and the product's UI patterns, embedded in the frame before you are asked for design. It is for scope confirmation, not design.","After the release plan is defined, the PDM partners with you on a high-fidelity mock-up for the features that need one. It is a manual process today; the spec reads requirements (colors, states, interactions) from the mock-up you upload or paste.","You finalize the mock-up in Requirements Collab and review the UI during Building.","Your in-progress mock-ups are tracked as Team Follow-ups with a UX owner, so nothing is lost between meetings.","Accessibility, localization and mobile impact are considerations the PDM must disposition; you are the input.","Your domain's help topics and validation rules in the KnowledgeBase state current behavior; conventions/terminology.json holds the domain's own terms where it has been filled."],
+ sayH:"What you say (Claude Desktop)",say:["/dvp","generate wireframe for VP2-1234","build mockup","how does <screen> work in vantagepoint"],
+ sayNote:"New chat: /dvp first. Do not use the generic UX persona or 'add ui requirements'; they write to a Notion spec that does not exist in this process.",
+ lists:[["Checklist",["The Prototype Direction question is specific enough to draw","Each wireframe in the set answers one decision point, stays inside Scope In and shows nothing from Scope Out","Three criteria met: answers the question, within scope, surfaces the decision without solving it","Hi-fi mock-up decided: produced and placed in the spec, or recorded as not needed","Follow-ups carry UX (Name); naming collisions with existing product states raised early (Rate Table's 'Inactive' versus Unit Tables)"]]],
+ first:["Iterate one framing wireframe set with a PDM.","Sit in one spec session and write the Level 1 mock-up text for one screen.","Produce one hi-fi mock-up after a release plan is defined and watch the spec skill read requirements from it."],
+ faqH:"UX questions",
+ faq:[["Is there a UX skill?","The mockup skill produces the lo-fi wireframes at framing. Detailed UX goes in the spec, and the hi-fi mock-up is produced by hand."],["Which features need a mock-up?","Same judgment as today: large new user patterns do, small changes to an existing screen usually do not. Not required for every feature."],["Where do higher-fidelity designs live?","With you (Figma), and in the spec once produced, where the skill reads them."]]},
+DOC:{name:"Documentation",vid:"e06-role-documentation.mp4",vt:"about 2.5 minutes: Documentation: in the room from the frame, release notes from the spec",
+ changes:["You are a stakeholder from the frame onward (section 17 always lists you) and a participant in Feature Review and in the feature team for Requirements Collab.","The context you used to reconstruct at the end is in the spec from the start: User Story, Existing Behavior, Requirements, Use Cases, and the Documentation and Tracking section (Doc ID, help topics, release notes).","You write the release notes from the spec once a PBI is marked Done; the PDM reviews. Your own RelNotes skill drafts them the way your team runs it today.","The Doc ID consideration and the help-topic updates flagged in the spec land with you through NOTIFICATION NEEDED.","Each domain's help/ folder in the KnowledgeBase is built from the help export, so your topics reach the skills through the KnowledgeBase as well as through the help lookup. The toolkit records the export date and asks for a fresh copy after 60 days; how topics are titled and tagged influences which domain they land in."],
+ sayH:"What you say (Claude Desktop)",say:["/dvp","check connectors","what's the status of feature VP2-1234","open the frame for VP2-1234","how does <screen> work in vantagepoint"],
+ sayNote:"Documentation's own RelNotes skill runs the way your team runs it today.",
+ lists:[["Per feature checklist",["Invited to the Feature Review; frame and draft spec read beforehand","Documentation and Tracking section of the spec reviewed: Doc ID, help topics, release notes expectations","Documentation considerations dispositioned with the PDM","Release notes written into the release notes field once the PBI is Done; PDM review requested","Help-topic updates tracked to the release"]]],
+ first:["Install the plugin and connect the work tracker and Notion connectors so you can read frames and specs.","Attend one Feature Review with the frame and draft spec read in advance.","Write the release notes for one PBI from its spec instead of from a demo."],
+ faqH:"Documentation questions",
+ faq:[["When do I write the release notes?","Once a PBI is marked Done, from the spec's Summary and key requirements, into the work tracker's release notes field. The PDM reviews."],["Is there a skill for it in the process?","Documentation's RelNotes skill drafts from the spec's Summary and key requirements; run it the way your team does today."],["Which meetings am I in?","Feature Review and Requirements Collab; the feature team meeting when the work needs you."]]},
+SM:{name:"Scrum Master and Team Owner",vid:"e07-role-scrum-master.mp4",vt:"about 3.5 minutes: The Scrum Master and Team Owner: flow",
+ changes:["Framing and Feature Review sit before the board, on the Feature. The board starts at Planned and has eight columns; Requirements Collab is new inside the sprint.","You coordinate the team at Feature Review, and you keep the feature team meeting a working session, not a standup.","Ready for Dev is a queue with no tasks; your job is to see what stalls there and why. The first PBI of a Feature may skip it.","PBIs are thin references to a spec on the Feature, with Dev, QE and Automation Tasks underneath; the PBI's slice of the spec and its Tech-Plan must be final before the card enters In Dev.","Team Owners ensure code reviews happen and PRs are approved; the Scrum Master owns the 24-hour PR review SLA.","The Scrum Master closes PBIs; the PDM closes the Feature. Two actions.","You own your team's domains in the KnowledgeBase: run createdomainmap per domain, answer its checkpoints, push and open the pull request, and re-run it to refresh after a release. population-status.jsonl is where status lives."],
+ sayH:"What you say (Claude Desktop)",say:["/dvp","what's the status of feature 1953408","find the work item","check Aha for VP2-1234","open the frame for VP2-1234"],
+ sayNote:"",
+ lists:[["Per feature checklist",["Frame exists in Notion; roadmap description links it","Spec on the Feature; default PBI plus agreed PBIs in the swimlane with iteration paths; Tasks under each for Dev, QE and Automation","Estimates on PBIs; spikes have their own PBIs; Opt-In follow-up PBIs created","Tech-Plan written in Requirements Collab and final before the PBI leaves it","PR review inside 24 hours","All Sev 1 to 3 bugs fixed before you close a PBI"]]],
+ first:["Map one Feature's cards to the eight columns, with Framing and Feature Review drawn to the left.","Check what is sitting in Ready for Dev and why.","Agree the 24-hour PR review expectation with your Team Owner and the reviewers.","Confirm who moves cards between which columns on your team, and that Dev, QE and Automation work is on Tasks."],
+ faqH:"Scrum Master questions",
+ faq:[["Where are the work item state names behind the columns?","On your board; the columns are the shared vocabulary across teams."],["What goes in Planned?","The committed PBIs once the release plan is defined. The Scrum Master moves the card out when its sprint starts, in today's practice; confirm the rule on your team."],["Who creates PBIs?","The spec skill on the PDM's confirmation, as the team agrees carve-up at Feature Review and Requirements Collab. There is no breakdown or estimation skill; the team does it."],["Is 'Ready for Testing' a column?","Not today. A column between In PR and In Testing is under consideration."],["What if the feature skipped framing?","Small quick wins may, by explicit PDM decision. Everything else should have a frame before Feature Review."]]}
+};
+const CARDORDER=["PDM","UX","DEV","QE","AUTO","DOC","SM"];
+const CARDLABEL={PDM:"PDM",UX:"UX",DEV:"Developer",QE:"QE",AUTO:"Automation",DOC:"Documentation",SM:"Scrum Master / Team Owner"};
+const ROLE2CARD={"PDM":"PDM","UX":"UX","Developer":"DEV","QE":"QE","Automation":"AUTO","Documentation":"DOC","Scrum Master / Team Owner":"SM"};
+let cardRole="PDM";const ticks={};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function drawCards(){
+  const chips=document.getElementById('cardChips');chips.innerHTML='';
+  CARDORDER.forEach(k=>{const b=el('button',{className:'chip'+(k===cardRole?' on':''),textContent:CARDLABEL[k]});b.onclick=()=>{cardRole=k;drawCards()};chips.appendChild(b)});
+  const c=CARDS[cardRole],box=document.getElementById('rc');
+  const chk=(grp,items)=>items.map((t,i)=>{const id=cardRole+'|'+grp+'|'+i;return `<label class="chk${ticks[id]?' on':''}"><input type="checkbox" data-id="${id}" ${ticks[id]?'checked':''}><span>${esc(t)}</span></label>`}).join('');
+  box.innerHTML=`<h3>${esc(c.name)}</h3>
+  <a class="vid" href="${VID+c.vid}" target="_blank" rel="noopener">Watch the explainer video, ${esc(c.vt)}</a>
+  <h4>What changes for you</h4><ul>${c.changes.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul>
+  <h4>${esc(c.sayH)}</h4><div>${c.say.map(s=>'<span class="say">'+esc(s)+'</span>').join('')}</div>${c.sayNote?'<p class="meta" style="font-size:13px;color:var(--mute)">'+esc(c.sayNote)+'</p>':''}
+  ${c.lists.map(l=>`<h4>${esc(l[0])}</h4>${chk(l[0],l[1])}`).join('')}
+  <h4>Your first week</h4>${chk('first',c.first)}
+  <details><summary class="big">${esc(c.faqH)}</summary>${c.faq.map(q=>`<div class="qa"><b>${esc(q[0])}</b><p>${esc(q[1])}</p></div>`).join('')}</details>`;
+  box.querySelectorAll('input[type=checkbox]').forEach(i=>i.onchange=e=>{ticks[e.target.dataset.id]=e.target.checked;e.target.closest('.chk').classList.toggle('on',e.target.checked)});
+}
+document.getElementById('sumBtn').onclick=()=>{
+  const out=STAGES.map(s=>`${done[s.n]?'[x]':'[ ]'} Stage ${s.n} ${s.name}${notes[s.n]?'\n    '+notes[s.n].replace(/\n/g,'\n    '):''}`).join('\n');
+  const box=document.getElementById('summary');box.style.display='block';box.textContent='My AI-SDLC progress\n'+out;
+  try{navigator.clipboard.writeText(box.textContent)}catch(e){}
+};
+document.getElementById('termSearch').oninput=e=>drawTerms(e.target.value);
+drawChips();drawStepper();drawPanel();drawCards();drawBoard();drawArt();drawSys();drawTerms();drawSkills();
+</script>
+</body>
+</html>
